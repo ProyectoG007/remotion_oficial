@@ -102,6 +102,7 @@ import {VideoTesting} from './VideoTesting';
 import {WarpDemoOuter} from './WarpText';
 import {WarpDemo2} from './WarpText/demo2';
 import {WatchStaticDemo} from './watch-static';
+import {SocialCampaignTemplate} from './SocialCampaignTemplate';
 import {ZodV4SchemaTest, zodV4Schema} from './ZodV4SchemaTest';
 // @ts-expect-error no types
 import styles from './styles.module.scss';
@@ -886,6 +887,32 @@ export const Index: React.FC = () => {
 					height={1080}
 					fps={30}
 					durationInFrames={100}
+				/>
+				<Composition
+					id="social-campaign-template"
+					component={SocialCampaignTemplate}
+					width={1920}
+					height={1080}
+					fps={30}
+					durationInFrames={150}
+					defaultProps={{
+						title: 'Campaña de redes sociales',
+						subtitle: 'Lanzamiento instantáneo',
+						description: 'Crea contenido dinámico para tu feed y stories.',
+						objective: 'Promocionar marca en redes',
+						backgroundColor: '#0f172a',
+						brandLogoUrl: 'https://assets.remotion.dev/logo.png',
+						brandName: 'Mi Marca',
+						imageUrl: 'https://assets.remotion.dev/emojis/emoji-0001.png',
+						includeSocials: true,
+						socials: [
+							{platform: 'instagram', username: '@miCuenta', url: 'https://instagram.com/miCuenta', iconUrl: 'https://assets.remotion.dev/social-icons/instagram.png'},
+							{platform: 'twitter', username: '@miCuenta', url: 'https://twitter.com/miCuenta', iconUrl: 'https://assets.remotion.dev/social-icons/twitter.png'},
+						],
+						showWebsite: true,
+						websiteUrl: 'https://miweb.com',
+						ctaText: 'Visitar ahora',
+					}} 
 				/>
 			</Folder>
 			<Folder name="AnimatedImage">
