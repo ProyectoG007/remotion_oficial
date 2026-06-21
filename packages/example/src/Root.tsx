@@ -104,6 +104,7 @@ import {WarpDemo2} from './WarpText/demo2';
 import {WatchStaticDemo} from './watch-static';
 import {SocialCampaignTemplate} from './SocialCampaignTemplate';
 import {ZodV4SchemaTest, zodV4Schema} from './ZodV4SchemaTest';
+import {MileiComposition} from './MileiVideo';
 // @ts-expect-error no types
 import styles from './styles.module.scss';
 
@@ -1928,6 +1929,9 @@ export const Index: React.FC = () => {
 				fps={30}
 				durationInFrames={2 * 60 * 30}
 			/>
+			<Folder name="custom">
+				<MileiComposition />
+			</Folder>
 		</>
 	);
 };
