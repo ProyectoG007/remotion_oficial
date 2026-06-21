@@ -8,7 +8,7 @@ import {
 	staticFile,
 } from 'remotion';
 
-const MileiContent: React.FC = () => {
+export const MileiContent: React.FC = () => {
 	const frame = useCurrentFrame();
 
 	// Fases del video (en 600 frames = 20 segundos a 30fps)
