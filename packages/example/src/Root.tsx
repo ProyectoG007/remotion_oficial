@@ -105,6 +105,7 @@ import {WatchStaticDemo} from './watch-static';
 import {SocialCampaignTemplate} from './SocialCampaignTemplate';
 import {ZodV4SchemaTest, zodV4Schema} from './ZodV4SchemaTest';
 import {MileiComposition} from './MileiVideo';
+import {MileiCustomComposition} from './MileiCustom';
 // @ts-expect-error no types
 import styles from './styles.module.scss';
 
@@ -1931,6 +1932,7 @@ export const Index: React.FC = () => {
 			/>
 			<Folder name="custom">
 				<MileiComposition />
+				<MileiCustomComposition />
 			</Folder>
 		</>
 	);
