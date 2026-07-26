@@ -40,6 +40,22 @@ import {ManyAudio} from './ManyAudio';
 import {HandleAudioRenderError} from './MediaErrorHandling/HandleAudioRenderError';
 import {InfiniteAudio} from './MediaErrorHandling/InfiniteAudio';
 import {MissingImg} from './MissingImg';
+import {
+	FlatCityExplainer,
+	flatCityExplainerSchema,
+} from './MotionArchetypes/FlatCityExplainer';
+import {
+	StickerLogoReveal,
+	stickerLogoRevealSchema,
+} from './MotionArchetypes/StickerLogoReveal';
+import {
+	TimeIsCurrency,
+	timeIsCurrencySchema,
+} from './MotionArchetypes/TimeIsCurrency';
+import {
+	WeightOfSteel,
+	weightOfSteelSchema,
+} from './MotionArchetypes/WeightOfSteel';
 import {OffthreadRemoteVideo} from './OffthreadRemoteVideo/OffthreadRemoteVideo';
 import {OffthreadVideoToCanvas} from './OffthreadVideoToCanvas';
 import {OrbScene} from './Orb';
@@ -67,12 +83,14 @@ import StarTest from './Shapes/StarTest';
 import TriangleTest from './Shapes/TriangleTest';
 import {SkipZeroFrame} from './SkipZeroFrame';
 import {SlicedVideo} from './SlicedVideo';
+import {SocialCampaignTemplate} from './SocialCampaignTemplate';
 import {BaseSpring, SpringWithDuration} from './Spring/base-spring';
 import {SeriesTesting} from './StaggerTesting';
 import {StaticDemo} from './StaticServer';
 import {StillHelloWorld} from './StillHelloWorld';
 import {StillZoom} from './StillZoom';
 import {DeleteStaticFile} from './StudioApis/DeleteStaticFile';
+import './style.css';
 import {ClickUpdate} from './StudioApis/RestartStudio';
 import {
 	SaveDefaultProps,
@@ -81,7 +99,6 @@ import {
 import {TriggerCalculateMetadata} from './StudioApis/TriggerCalculateMetadata';
 import {WriteStaticFile} from './StudioApis/WriteStaticFile';
 import {SubtitleArtifact} from './SubtitleArtifact/SubtitleArtifact';
-import './style.css';
 import {SvgFilter} from './SvgFilter';
 import {Tailwind} from './Tailwind';
 import {TenFrameTester} from './TenFrameTester';
@@ -102,7 +119,6 @@ import {VideoTesting} from './VideoTesting';
 import {WarpDemoOuter} from './WarpText';
 import {WarpDemo2} from './WarpText/demo2';
 import {WatchStaticDemo} from './watch-static';
-import {SocialCampaignTemplate} from './SocialCampaignTemplate';
 import {ZodV4SchemaTest, zodV4Schema} from './ZodV4SchemaTest';
 // @ts-expect-error no types
 import styles from './styles.module.scss';
@@ -906,13 +922,97 @@ export const Index: React.FC = () => {
 						imageUrl: 'https://assets.remotion.dev/emojis/emoji-0001.png',
 						includeSocials: true,
 						socials: [
-							{platform: 'instagram', username: '@miCuenta', url: 'https://instagram.com/miCuenta', iconUrl: 'https://assets.remotion.dev/social-icons/instagram.png'},
-							{platform: 'twitter', username: '@miCuenta', url: 'https://twitter.com/miCuenta', iconUrl: 'https://assets.remotion.dev/social-icons/twitter.png'},
+							{
+								platform: 'instagram',
+								username: '@miCuenta',
+								url: 'https://instagram.com/miCuenta',
+								iconUrl:
+									'https://assets.remotion.dev/social-icons/instagram.png',
+							},
+							{
+								platform: 'twitter',
+								username: '@miCuenta',
+								url: 'https://twitter.com/miCuenta',
+								iconUrl: 'https://assets.remotion.dev/social-icons/twitter.png',
+							},
 						],
 						showWebsite: true,
 						websiteUrl: 'https://miweb.com',
 						ctaText: 'Visitar ahora',
-					}} 
+					}}
+				/>
+			</Folder>
+			<Folder name="motion-archetypes">
+				<Composition
+					id="archetype-time-is-currency"
+					component={TimeIsCurrency}
+					width={1920}
+					height={1080}
+					fps={30}
+					durationInFrames={180}
+					schema={timeIsCurrencySchema}
+					defaultProps={{
+						line1: 'Time is the',
+						line2: 'only currency',
+						closer: 'Spend it well',
+						paper: '#F2EFE6',
+						accent: '#E23A1E',
+						ink: '#111111',
+						coinCount: 5,
+					}}
+				/>
+				<Composition
+					id="archetype-weight-of-steel"
+					component={WeightOfSteel}
+					width={1920}
+					height={1080}
+					fps={30}
+					durationInFrames={240}
+					schema={weightOfSteelSchema}
+					defaultProps={{
+						title1: 'SILENCE',
+						title2: 'THE WEIGHT OF STEEL.',
+						closer: 'HONOR',
+						paper: '#EFE9DD',
+						ink: '#1C2733',
+						smoke: '#8A93A0',
+					}}
+				/>
+				<Composition
+					id="archetype-sticker-logo"
+					component={StickerLogoReveal}
+					width={1080}
+					height={1080}
+					fps={30}
+					durationInFrames={120}
+					schema={stickerLogoRevealSchema}
+					defaultProps={{
+						line1: 'ELLY Y',
+						line2: 'STUDIO',
+						lilac: '#B98CE8',
+						green: '#1E9E6A',
+						yellow: '#F5C518',
+						purple: '#5B2A86',
+						outline: '#101010',
+					}}
+				/>
+				<Composition
+					id="archetype-flat-city"
+					component={FlatCityExplainer}
+					width={1080}
+					height={1920}
+					fps={30}
+					durationInFrames={270}
+					schema={flatCityExplainerSchema}
+					defaultProps={{
+						headline: 'Sin curva de aprendizaje',
+						subline: 'Diseño de movimiento en código',
+						navy: '#123A5F',
+						mid: '#2E86C1',
+						light: '#9FD3EC',
+						background: '#FFFFFF',
+						buildingCount: 7,
+					}}
 				/>
 			</Folder>
 			<Folder name="AnimatedImage">
