@@ -19,7 +19,8 @@
 		"make": "tsgo -d && bun --env-file=../.env.bundle bundle.ts"
 	},
 	"files": [
-		"dist"
+		"dist",
+		"Dockerfile"
 	],
 	"author": "Jonny Burger <jonny@remotion.dev>, Pramod Kumar <pramodkumar.damam73@gmail.com>",
 	"license": "MIT",

@@ -131,3 +131,41 @@ The model fills in the props of the composition – title, subtitle, brand logo,
 :::note
 All asset URLs the model passes must be absolute and publicly reachable, because the render happens on Lambda and has no access to your local files.
 :::
+
+## Deploying
+
+To use the server as a remote connector, it needs to be reachable over HTTPS. Since a render takes minutes, host it somewhere that allows long-lived requests – a container platform rather than a serverless function.
+
+<Step>1</Step> Deploy the render backend and note down both values that get printed:
+
+```bash
+npx remotion lambda functions deploy
+npx remotion lambda sites create src/index.ts --site-name=my-campaigns
+```
+
+The function name goes into `REMOTION_MCP_FUNCTION_NAME`, the serve URL into `REMOTION_MCP_SERVE_URL`.
+
+<Step>2</Step> Build the container image. A `Dockerfile` ships inside the package, so you can build it without copying anything:
+
+```bash
+docker build -t remotion-mcp node_modules/@remotion/mcp
+```
+
+<Step>3</Step> Run it with the configuration from step 1:
+
+```bash
+docker run -p 3111:3111 \
+  -e REMOTION_MCP_SERVE_URL=https://... \
+  -e REMOTION_MCP_FUNCTION_NAME=remotion-render-... \
+  -e AWS_ACCESS_KEY_ID=... \
+  -e AWS_SECRET_ACCESS_KEY=... \
+  remotion-mcp
+```
+
+The container binds to `0.0.0.0` so the port is reachable from outside.
+
+<Step>4</Step> Put it behind a proxy that terminates TLS and authenticates requests, then add the resulting `https://<your-host>/mcp` URL as a custom connector in your agent.
+
+:::warning
+Do not skip step 4. The server has no authentication of its own, so anyone who can reach the URL can trigger renders that are billed to your AWS account.
+:::
