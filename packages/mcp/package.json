@@ -27,11 +27,19 @@
 		"@modelcontextprotocol/sdk": "1.26.0",
 		"zod": "4.1.13"
 	},
-	"peerDependencies": {},
+	"peerDependencies": {
+		"@remotion/lambda-client": "workspace:*"
+	},
+	"peerDependenciesMeta": {
+		"@remotion/lambda-client": {
+			"optional": true
+		}
+	},
 	"devDependencies": {
 		"@remotion/eslint-config-internal": "workspace:*",
 		"eslint": "catalog:",
 		"@types/command-line-args": "^5.2.3",
+		"@types/node": "catalog:",
 		"@typescript/native-preview": "catalog:"
 	},
 	"keywords": [

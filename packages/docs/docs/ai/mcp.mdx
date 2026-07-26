@@ -13,6 +13,13 @@ Our MCP server uses [CrawlChat](https://crawlchat.app)'s technology to index Rem
 **Test Phase**: Right now, this tool is open without authentication. If running this tool gets too expensive, we might restrict the usage.
 :::
 
+## Tools
+
+| Tool                     | What it does                                                                                                       |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `remotion-documentation` | Searches the Remotion documentation.                                                                               |
+| `remotion-render-video`  | Renders a social campaign video on Remotion Lambda and returns a URL to the MP4. Needs [setup](#rendering-videos). |
+
 ## Cursor
 
 ### One-Click Install
@@ -69,3 +76,58 @@ If you now ask Cursor in the composer to use the Remotion Documentation, the MCP
 <Step>4</Step> The server should now appear in the MCP servers list. You can verify it's running by opening the Extensions view (<kbd>Cmd+Shift+X</kbd> / <kbd>Ctrl+Shift+X</kbd>) and checking the MCP Servers section.
 
 If you now ask GitHub Copilot Chat to use the Remotion Documentation, the MCP should get invoked.
+
+## Remote server
+
+By default, the server communicates over stdio, which requires the client to spawn it as a local process.
+
+Pass `--http` to serve it over Streamable HTTP instead, so that agents which only accept a URL – such as a custom connector in the Claude web app – can connect to it:
+
+```bash
+npx @remotion/mcp@latest --http --port 3111
+```
+
+The endpoint is then available at `http://127.0.0.1:3111/mcp`, and `GET /health` responds with `{"status":"ok"}`.
+
+| Flag         | Default     | Description                                  |
+| ------------ | ----------- | -------------------------------------------- |
+| `--http`     | –           | Serve over Streamable HTTP instead of stdio. |
+| `--port`     | `3111`      | Port to listen on. Also read from `$PORT`.   |
+| `--host`     | `127.0.0.1` | Host to bind to.                             |
+| `--endpoint` | `/mcp`      | Path to serve the MCP endpoint on.           |
+
+:::warning
+The server has no authentication built in. It binds to `127.0.0.1` by default – if you expose it to the internet, put it behind a proxy that terminates TLS and authenticates requests. Otherwise anyone who can reach it can trigger renders on your AWS account.
+:::
+
+## Rendering videos
+
+The `remotion-render-video` tool renders the `social-campaign-template` composition on [Remotion Lambda](/docs/lambda) and returns a URL to the finished MP4.
+
+<Step>1</Step> Install the optional peer dependency:
+
+```bash
+npm i @remotion/lambda-client --save-exact
+```
+
+<Step>2</Step> [Deploy a function and a site](/docs/lambda/setup), then configure the server through environment variables:
+
+| Variable                         | Default                    | Description                                                |
+| -------------------------------- | -------------------------- | ---------------------------------------------------------- |
+| `REMOTION_MCP_SERVE_URL`         | – (required)               | The bundled site to render.                                |
+| `REMOTION_MCP_FUNCTION_NAME`     | – (required)               | The deployed Lambda function.                              |
+| `REMOTION_MCP_AWS_REGION`        | `us-east-1`                | The region the function is deployed in.                    |
+| `REMOTION_MCP_COMPOSITION`       | `social-campaign-template` | The composition to render.                                 |
+| `REMOTION_MCP_PRIVACY`           | `public`                   | Whether the output is publicly accessible.                 |
+| `REMOTION_MCP_FPS`               | `30`                       | FPS of the composition, used to convert seconds to frames. |
+| `REMOTION_MCP_RENDER_TIMEOUT_MS` | `300000`                   | How long to wait for a render before giving up.            |
+
+If the required variables are missing, the tool explains what to set instead of failing silently.
+
+<Step>3</Step> Ask your agent for a video, for example: _"Render a launch video for my client, portrait, 8 seconds."_
+
+The model fills in the props of the composition – title, subtitle, brand logo, call to action, socials – and may set `orientation` (`landscape`, `portrait` or `square`) and `durationInSeconds`.
+
+:::note
+All asset URLs the model passes must be absolute and publicly reachable, because the render happens on Lambda and has no access to your local files.
+:::

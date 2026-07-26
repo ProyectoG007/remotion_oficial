@@ -1,34 +1,31 @@
 #! /usr/bin/env node
 
-import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {StdioServerTransport} from '@modelcontextprotocol/sdk/server/stdio.js';
-import * as z from 'zod/v4';
+import {HELP_TEXT, parseCliArgs} from './cli-args.js';
+import {startHttpServer} from './http-server.js';
+import {createRemotionMcpServer} from './server.js';
 
-const HOST = 'https://mcp.remotion.dev';
+const argv = process.argv.slice(2);
 
-const server = new McpServer({
-	name: 'remotion-mcp',
-	version: '1.0.0',
-});
+if (argv.includes('--help') || argv.includes('-h')) {
+	// eslint-disable-next-line no-console
+	console.log(HELP_TEXT);
+	process.exit(0);
+}
 
-server.registerTool(
-	'remotion-documentation',
-	{
-		title: 'Search the Remotion documentation',
-		description: 'Search the Remotion documentation',
-		inputSchema: {
-			query: z.string({
-				message: 'The query to search for. Keep it short and concise.',
-			}),
-		},
-	},
-	async ({query}: {query: string}) => {
-		const res = await fetch(
-			`${HOST}/mcp/67cad4626afeae106c6ffb50?query=${query}`,
-		);
-		return {content: [{type: 'text' as const, text: await res.text()}]};
-	},
-);
+const parsed = parseCliArgs(argv);
 
-const transport = new StdioServerTransport();
-await server.connect(transport);
+if (parsed.type === 'error') {
+	// eslint-disable-next-line no-console
+	console.error(`${parsed.reason}\n\n${HELP_TEXT}`);
+	process.exit(1);
+}
+
+const {transport, port, host, endpoint} = parsed.args;
+
+if (transport === 'http') {
+	await startHttpServer({port, host, endpoint});
+} else {
+	const stdioTransport = new StdioServerTransport();
+	await createRemotionMcpServer().connect(stdioTransport);
+}

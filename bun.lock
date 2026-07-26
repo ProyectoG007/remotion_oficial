@@ -1000,9 +1000,16 @@
       "devDependencies": {
         "@remotion/eslint-config-internal": "workspace:*",
         "@types/command-line-args": "^5.2.3",
+        "@types/node": "catalog:",
         "@typescript/native-preview": "catalog:",
         "eslint": "catalog:",
       },
+      "peerDependencies": {
+        "@remotion/lambda-client": "workspace:*",
+      },
+      "optionalPeers": [
+        "@remotion/lambda-client",
+      ],
     },
     "packages/media": {
       "name": "@remotion/media",
